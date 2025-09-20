@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -35,17 +36,21 @@ public class ContaReceber implements Serializable {
 	@JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(name = "pessoa_fk"))
 	private Pessoa pessoa;
 
+	@Column(nullable = false)
 	private String descricacao;
 
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private StatusContaReceber statusContaReceber;
 
+	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date dtVencimento;
 
 	@Temporal(TemporalType.DATE)
 	private Date dtPagamento;
 
+	@Column(nullable = false)
 	private BigDecimal valorTotal;
 
 	private BigDecimal valorDesconto;

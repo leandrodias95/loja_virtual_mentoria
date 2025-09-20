@@ -3,6 +3,7 @@ package jdev.mentoria.lojavirtual.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
@@ -24,12 +25,14 @@ public class AvalicaoProduto implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_avalicao_produto")
 	private Long id; 
 	
+	@Column(nullable = false)
 	private Integer nota;
 	
 	@ManyToOne
 	@JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(name = "pessoa_fk"))
 	private Pessoa pessoa;
 	
+	@Column(nullable = false)
 	private String descricao;
 
 	public Long getId() {

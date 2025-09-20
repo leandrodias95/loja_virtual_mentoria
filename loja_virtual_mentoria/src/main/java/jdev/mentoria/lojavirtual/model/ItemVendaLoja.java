@@ -3,6 +3,7 @@ package jdev.mentoria.lojavirtual.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +26,7 @@ public class ItemVendaLoja implements Serializable{
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_item_venda_loja")
 	private Long id; 
 	
+	@Column(nullable = false)
 	private Double quantidade; 
 	
 	@ManyToOne
