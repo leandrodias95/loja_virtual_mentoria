@@ -1,5 +1,6 @@
 package jdev.mentoria.lojavirtual.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -15,12 +16,12 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "avalicao_produto")
+@Table(name = "avaliacao_produto")
 @SequenceGenerator(name = "seq_avalicao_produto", sequenceName = "seq_avalicao_produto", allocationSize = 1, initialValue = 1)
-public class AvalicaoProduto implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-	
+public class AvaliacaoProduto implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+    
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_avalicao_produto")
 	private Long id; 
@@ -31,6 +32,10 @@ public class AvalicaoProduto implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(name = "pessoa_fk"))
 	private Pessoa pessoa;
+	
+	@ManyToOne
+	@JoinColumn(name = "produto_id", nullable = false, foreignKey = @ForeignKey(name = "produto_fk"))
+	private Produto produto;
 	
 	@Column(nullable = false)
 	private String descricao;
@@ -82,7 +87,7 @@ public class AvalicaoProduto implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AvalicaoProduto other = (AvalicaoProduto) obj;
+		AvaliacaoProduto other = (AvaliacaoProduto) obj;
 		return Objects.equals(id, other.id);
 	}
 

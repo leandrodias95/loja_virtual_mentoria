@@ -1,5 +1,6 @@
 package jdev.mentoria.lojavirtual.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -20,8 +21,9 @@ import jakarta.persistence.Table;
 @Table(name = "imagem_produto")
 @SequenceGenerator(name = "seq_imagem_produto", sequenceName = "seq_imagem_produto", allocationSize = 1, initialValue = 1)
 public class ImagemProduto implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
+   
 
 	
 	@Id

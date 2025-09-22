@@ -1,5 +1,6 @@
 package jdev.mentoria.lojavirtual.model;
 
+import java.io.Serial;
 import java.util.Objects;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -11,13 +12,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+
 @Entity
 @Table(name= "acesso")
-@SequenceGenerator(name="seq_acesso", sequenceName = "seq_acesso", allocationSize = 1, initialValue = 1)
-public class Acesso implements GrantedAuthority{
-	
-	private static final long serialVersionUID = 1L;
-
+@SequenceGenerator(name = "seq_acesso", sequenceName = "seq_acesso", initialValue = 1, allocationSize = 1)
+public class Acesso implements GrantedAuthority {
+    @Serial
+    private static final long serialVersionUID = 1L;
+    
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_acesso")
 	private Long id;

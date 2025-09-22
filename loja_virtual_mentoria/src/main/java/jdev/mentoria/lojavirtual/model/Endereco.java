@@ -1,5 +1,6 @@
 package jdev.mentoria.lojavirtual.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -21,8 +22,9 @@ import jdev.mentoria.lojavirtual.enums.TipoEndereco;
 @Table(name = "endereco")
 @SequenceGenerator(name="seq_endereco", sequenceName="seq_endereco", allocationSize = 1, initialValue = 1)
 public class Endereco implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
+    
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_endereco")

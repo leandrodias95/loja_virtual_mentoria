@@ -1,5 +1,6 @@
 package jdev.mentoria.lojavirtual.model;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,9 +19,9 @@ import jakarta.persistence.TemporalType;
 @Table(name = "pessoa_fisica")
 public class PessoaFisica extends Pessoa {
 
-
-	private static final long serialVersionUID = 1L;
-
+    @Serial
+    private static final long serialVersionUID = 1L;
+   
 
 	@Column(nullable = false)
 	private String cpf;

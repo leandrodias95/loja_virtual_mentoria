@@ -1,5 +1,6 @@
 package jdev.mentoria.lojavirtual.model;
 
+import java.io.Serial;
 import java.sql.Date;
 import java.util.Collection;
 import java.util.List;
@@ -29,8 +30,9 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "usuario")
 @SequenceGenerator(name="seq_usuario", sequenceName="seq_usuario", allocationSize = 1, initialValue = 1)
 public class Usuario implements UserDetails{
-	
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
+    
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_usuario")

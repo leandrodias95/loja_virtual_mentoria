@@ -1,5 +1,6 @@
 package jdev.mentoria.lojavirtual.model;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +14,9 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name= "pessoa_juridica")
 public class PessoaJuridica extends Pessoa{
-
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
+   
 	@Column(nullable = false)
 	private String cnpj;
 	
