@@ -19,8 +19,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import jdev.mentoria.lojavirtual.enums.StatusContaPagar;
 
@@ -35,23 +33,18 @@ public class ContaPagar implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_conta_pagar")
 	private Long id;
 
-	@NotEmpty(message = "Informe o campo descrição da conta a pagar")
-	@NotNull(message = "Informe o campo descrição da conta a pagar")
 	@Column(nullable = false)
 	private String descricao;
 
-	@NotNull(message = "Informe o valor toral da conta a pagar")
 	@Column(nullable = false)
 	private BigDecimal valorTotal;
 
 	private BigDecimal valorDesconto;
 
-	@NotNull(message = "Inforte o status da conta a pagar")
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private StatusContaPagar status;
 
-	@NotNull(message = "Informa a dara de vencimento da conta a pagar")
 	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date dtVencimento;
@@ -59,32 +52,15 @@ public class ContaPagar implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date dtPagamento;
 
-	@ManyToOne(targetEntity = PessoaFisica.class)
+	@ManyToOne(targetEntity = Pessoa.class)
 	@JoinColumn(name = "pessoa_id", nullable = false,
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
-	private PessoaFisica pessoa;
+	private Pessoa pessoa;
 
-	@ManyToOne(targetEntity = PessoaJuridica.class)
+	@ManyToOne(targetEntity = Pessoa.class)
 	@JoinColumn(name = "pessoa_forn_id", nullable = false, 
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_forn_fk"))
-	private PessoaJuridica pessoa_fornecedor;
-	
-	
-	@ManyToOne(targetEntity = PessoaJuridica.class)
-	@JoinColumn(name = "empresa_id", nullable = false, 
-	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
-	private PessoaJuridica empresa;
-	
-	
-	
-
-	public PessoaJuridica getEmpresa() {
-		return empresa;
-	}
-
-	public void setEmpresa(PessoaJuridica empresa) {
-		this.empresa = empresa;
-	}
+	private Pessoa pessoa_fornecedor;
 
 	public Long getId() {
 		return id;
@@ -110,11 +86,11 @@ public class ContaPagar implements Serializable {
 		this.status = status;
 	}
 
-	public PessoaJuridica getPessoa_fornecedor() {
+	public Pessoa getPessoa_fornecedor() {
 		return pessoa_fornecedor;
 	}
 
-	public void setPessoa_fornecedor(PessoaJuridica pessoa_fornecedor) {
+	public void setPessoa_fornecedor(Pessoa pessoa_fornecedor) {
 		this.pessoa_fornecedor = pessoa_fornecedor;
 	}
 
@@ -150,11 +126,11 @@ public class ContaPagar implements Serializable {
 		this.valorDesconto = valorDesconto;
 	}
 
-	public PessoaFisica getPessoa() {
+	public Pessoa getPessoa() {
 		return pessoa;
 	}
 
-	public void setPessoa(PessoaFisica pessoa) {
+	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
 	}
 

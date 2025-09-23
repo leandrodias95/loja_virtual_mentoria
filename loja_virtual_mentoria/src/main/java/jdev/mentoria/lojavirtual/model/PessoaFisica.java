@@ -8,11 +8,6 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
-import org.hibernate.validator.constraints.br.CPF;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "pessoa_fisica")
@@ -21,26 +16,12 @@ public class PessoaFisica extends Pessoa {
 
 	private static final long serialVersionUID = 1L;
 
-	@CPF(message = "CPF está inválido")
 	@Column(nullable = false)
 	private String cpf;
 
-	@JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
 	@Temporal(TemporalType.DATE)
 	private Date dataNascimento;
-	
-	
-	@Transient
-	private String senhaTemp;
 
-	public void setSenhaTemp(String senhaTemp) {
-		this.senhaTemp = senhaTemp;
-	}
-	
-	public String getSenhaTemp() {
-		return senhaTemp;
-	}
-	
 	public String getCpf() {
 		return cpf;
 	}

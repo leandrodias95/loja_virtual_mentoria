@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -35,8 +34,6 @@ public class NotaFiscalVenda implements Serializable {
 	@Column(nullable = false)
 	private String tipo;
 
-	@Column(nullable = false)
-	private String chave;
 	
 	@Column(columnDefinition = "text", nullable = false)
 	private String xml;
@@ -45,40 +42,9 @@ public class NotaFiscalVenda implements Serializable {
 	private String pdf;
 	
 	@OneToOne
-	@JoinColumn(name = "venda_compra_loja_virt_id", nullable = true, 
+	@JoinColumn(name = "venda_compra_loja_virt_id", nullable = false, 
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "venda_compra_loja_virt_fk"))
 	private VendaCompraLojaVirtual vendaCompraLojaVirtual;
-	
-	
-	@ManyToOne(targetEntity = PessoaJuridica.class)
-	@JoinColumn(name = "empresa_id", nullable = false, 
-	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
-	private PessoaJuridica empresa;
-	
-	
-	public void setChave(String chave) {
-		this.chave = chave;
-	}
-	
-	public String getChave() {
-		return chave;
-	}
-
-	public VendaCompraLojaVirtual getVendaCompraLojaVirtual() {
-		return vendaCompraLojaVirtual;
-	}
-
-	public void setVendaCompraLojaVirtual(VendaCompraLojaVirtual vendaCompraLojaVirtual) {
-		this.vendaCompraLojaVirtual = vendaCompraLojaVirtual;
-	}
-
-	public PessoaJuridica getEmpresa() {
-		return empresa;
-	}
-
-	public void setEmpresa(PessoaJuridica empresa) {
-		this.empresa = empresa;
-	}
 
 	public Long getId() {
 		return id;
