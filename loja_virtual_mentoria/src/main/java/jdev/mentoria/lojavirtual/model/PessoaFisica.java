@@ -1,68 +1,60 @@
 package jdev.mentoria.lojavirtual.model;
 
-import java.io.Serial;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
+import org.hibernate.validator.constraints.br.CPF;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "pessoa_fisica")
+@PrimaryKeyJoinColumn(name = "id")
 public class PessoaFisica extends Pessoa {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
-   
+	private static final long serialVersionUID = 1L;
 
+	@CPF(message = "CPF está inválido")
 	@Column(nullable = false)
 	private String cpf;
 
-	@Column(nullable = false)
+	@JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
 	@Temporal(TemporalType.DATE)
 	private Date dataNascimento;
 	
-	@OneToMany(mappedBy = "pessoaFisica", orphanRemoval = true, cascade = CascadeType.ALL, fetch =FetchType.LAZY) //orphanRemoval = se apaga uma pessoa apaga os endereços
-	private List<Endereco> enderecos =  new ArrayList<Endereco>(); 
+	
+	@Transient
+	private String senhaTemp;
 
-
+	public void setSenhaTemp(String senhaTemp) {
+		this.senhaTemp = senhaTemp;
+	}
+	
+	public String getSenhaTemp() {
+		return senhaTemp;
+	}
+	
 	public String getCpf() {
 		return cpf;
 	}
-
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 
-
 	public Date getDataNascimento() {
 		return dataNascimento;
 	}
-
 
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
-
-	public List<Endereco> getEnderecos() {
-		return enderecos;
-	}
-
-
-	public void setEnderecos(List<Endereco> enderecos) {
-		this.enderecos = enderecos;
-	}
-
-
 }
-
