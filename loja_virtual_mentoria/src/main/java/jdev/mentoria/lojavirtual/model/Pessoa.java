@@ -32,6 +32,9 @@ public abstract class Pessoa implements Serializable {
 
 	@Column(nullable = false)
 	private String email;
+	
+	@Column
+	private String tipoPessoa; 
 
 	@Column(nullable = false)
 	private String telefone;
@@ -78,6 +81,16 @@ public abstract class Pessoa implements Serializable {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+	
+	
+
+	public String getTipoPessoa() {
+		return tipoPessoa;
+	}
+
+	public void setTipoPessoa(String tipoPessoa) {
+		this.tipoPessoa = tipoPessoa;
 	}
 
 	@Override

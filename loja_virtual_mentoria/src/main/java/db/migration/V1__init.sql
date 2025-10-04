@@ -77,7 +77,6 @@ CREATE FUNCTION validachavepessoa() RETURNS trigger
   end;
   $$;
 
-
 ALTER FUNCTION public.validachavepessoa() OWNER TO postgres;
 
 --
@@ -105,6 +104,7 @@ CREATE FUNCTION validachavepessoa2() RETURNS trigger
 
 
 ALTER FUNCTION public.validachavepessoa2() OWNER TO postgres;
+
 
 SET default_tablespace = '';
 
