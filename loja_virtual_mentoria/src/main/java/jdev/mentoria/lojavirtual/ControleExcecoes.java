@@ -76,6 +76,6 @@ public class ControleExcecoes extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<Object>(objetoErroDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		
 		
-	}
+	} teste
 
 }
