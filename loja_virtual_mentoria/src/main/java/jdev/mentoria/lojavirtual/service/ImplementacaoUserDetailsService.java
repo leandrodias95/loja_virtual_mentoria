@@ -1,5 +1,6 @@
 package jdev.mentoria.lojavirtual.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,6 +13,7 @@ import jdev.mentoria.lojavirtual.repository.UsuarioRepository;
 @Service
 public class ImplementacaoUserDetailsService implements UserDetailsService {
 
+	@Autowired
 	private UsuarioRepository usuarioRepository; 
 	
 	

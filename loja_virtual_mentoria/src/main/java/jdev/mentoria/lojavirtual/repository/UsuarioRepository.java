@@ -2,6 +2,7 @@ package jdev.mentoria.lojavirtual.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import jdev.mentoria.lojavirtual.model.Usuario;
@@ -10,7 +11,7 @@ import jdev.mentoria.lojavirtual.model.Usuario;
 public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
 	
 	
-	@Query(value = "select u from Usuario u where u.login =?1")
-	Usuario findUserByLogin(String login);
+	@Query("select u from Usuario u left join fetch u.acessos where u.login = :login")
+	Usuario findUserByLogin(@Param("login") String login);
 
 }
