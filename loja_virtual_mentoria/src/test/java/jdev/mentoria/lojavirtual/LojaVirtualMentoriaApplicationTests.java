@@ -1,5 +1,6 @@
 package jdev.mentoria.lojavirtual;
 
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -41,7 +42,7 @@ class LojaVirtualMentoriaApplicationTests extends TestCase {
 		DefaultMockMvcBuilder builder =  MockMvcBuilders.webAppContextSetup(this.wac); //cria um builder mock
 		MockMvc mockMvc = builder.build(); 
 		Acesso acesso =  new Acesso();
-		acesso.setDescricao("ROLE_COMPRADOR");
+		acesso.setDescricao("ROLE_COMPRADOR" + Calendar.getInstance().getTimeInMillis());
 		ObjectMapper objectMapper = new ObjectMapper(); //convert em json
 		ResultActions retornoApi = mockMvc
 				.perform(MockMvcRequestBuilders.post("/salvarAcesso")
@@ -63,10 +64,11 @@ class LojaVirtualMentoriaApplicationTests extends TestCase {
 	public void testCadastraAcesso() throws ExceptionMentoriaJava {
 		
 		Acesso acesso = new Acesso();
-		acesso.setDescricao("ROLE_ADMIN");
+		String descAcesso = "ROLE_ADMIN" + Calendar.getInstance().getTimeInMillis();
+		acesso.setDescricao(descAcesso);
 		acesso = acessoController.salvarAcesso(acesso).getBody();
 		assertEquals(true, acesso.getId()>0);
-		assertEquals("ROLE_ADMIN", acesso.getDescricao());
+		assertEquals(descAcesso, acesso.getDescricao());
 		Acesso acesso2 = acessoRepository.findById(acesso.getId()).get();
 		assertEquals(acesso.getId(), acesso2.getId());
 		
