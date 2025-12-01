@@ -24,9 +24,18 @@ public class PessoaUserService {
 	@Autowired
 	private JdbcTemplate jdbcTemplate; 
 	
+	@Autowired
+	private ServiceEnvioEmail serviceEnvioEmail; 
+	
+	
 	public PessoaJuridica salvarPessoaJuridica(PessoaJuridica pessoaJuridica) {
-		pessoaJuridica = pessoaRepository.save(pessoaJuridica);
+		//pessoaJuridica = pessoaRepository.save(pessoaJuridica);
+		for(int i= 0; i < pessoaJuridica.getEnderecos().size(); i++) { 
+			pessoaJuridica.getEnderecos().get(i).setPessoa(pessoaJuridica);
+			pessoaJuridica.getEnderecos().get(i).setEmpresa(pessoaJuridica);
+		}
 		Usuario usuarioPj = usuarioRepository.findUserByPessoa(pessoaJuridica.getId(), pessoaJuridica.getEmail()); 
+		pessoaJuridica = pessoaRepository.save(pessoaJuridica);
 		if(usuarioPj == null) {
 			String constriant = usuarioRepository.consultaConstraintAcesso(); 
 			if(constriant != null) {
