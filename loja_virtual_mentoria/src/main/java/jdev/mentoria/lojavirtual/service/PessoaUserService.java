@@ -52,6 +52,19 @@ public class PessoaUserService {
 			usuarioPj.setSenha(senhaCript);
 			usuarioPj = usuarioRepository.save(usuarioPj);
 			usuarioRepository.insereAcessoUserPj(usuarioPj.getId());
+			StringBuilder messageHtml =  new StringBuilder(); 
+			
+			messageHtml.append("<h2>Segue abaixo seus dados de acesso a loja virtual</h2>"); 
+			messageHtml.append("<b>Login: </b>"+pessoaJuridica.getEmail()+"<br/>"); 
+			messageHtml.append("<b>Senha: </b>"+senha+"<br/><br/>"); 
+			messageHtml.append("Obrigado!"); 
+
+			
+			try {
+			serviceEnvioEmail.enviarEmailHtml("Acesso Gerado para Loja Virtual", messageHtml.toString(), pessoaJuridica.getEmail());
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return pessoaJuridica; 
 	}
