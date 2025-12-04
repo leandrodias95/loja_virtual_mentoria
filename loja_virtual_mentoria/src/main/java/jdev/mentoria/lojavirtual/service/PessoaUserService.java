@@ -52,8 +52,8 @@ public class PessoaUserService {
 			usuarioPj.setSenha(senhaCript);
 			usuarioPj = usuarioRepository.save(usuarioPj);
 			usuarioRepository.insereAcessoUserPj(usuarioPj.getId());
-			StringBuilder messageHtml =  new StringBuilder(); 
-			
+			usuarioRepository.insereAcessoUserPj(usuarioPj.getId(), "ROLE_ADMIN");
+			StringBuilder messageHtml =  new StringBuilder(); 	
 			messageHtml.append("<h2>Segue abaixo seus dados de acesso a loja virtual</h2>"); 
 			messageHtml.append("<b>Login: </b>"+pessoaJuridica.getEmail()+"<br/>"); 
 			messageHtml.append("<b>Senha: </b>"+senha+"<br/><br/>"); 
