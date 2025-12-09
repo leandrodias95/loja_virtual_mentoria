@@ -8,8 +8,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jdev.mentoria.lojavirtual.model.PessoaJuridica;
+import jdev.mentoria.lojavirtual.model.PessoaFisica;
 import jdev.mentoria.lojavirtual.model.Usuario;
-import jdev.mentoria.lojavirtual.repository.PessoaRepository;
+import jdev.mentoria.lojavirtual.repository.PessoaFisicaRepository;
+import jdev.mentoria.lojavirtual.repository.PessoaJuridicaRepository;
 import jdev.mentoria.lojavirtual.repository.UsuarioRepository;
 
 @Service
@@ -19,13 +21,16 @@ public class PessoaUserService {
 	private UsuarioRepository usuarioRepository;
 	
 	@Autowired
-	private PessoaRepository pessoaRepository; 
+	private PessoaJuridicaRepository pessoaRepository; 
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate; 
 	
 	@Autowired
 	private ServiceEnvioEmail serviceEnvioEmail; 
+	
+	@Autowired
+	private PessoaFisicaRepository pessoaFisicaRepository; 
 	
 	
 	public PessoaJuridica salvarPessoaJuridica(PessoaJuridica pessoaJuridica) {
@@ -51,7 +56,7 @@ public class PessoaUserService {
 			String senhaCript = new BCryptPasswordEncoder().encode(senha);
 			usuarioPj.setSenha(senhaCript);
 			usuarioPj = usuarioRepository.save(usuarioPj);
-			usuarioRepository.insereAcessoUserPj(usuarioPj.getId());
+			usuarioRepository.insereAcessoUser(usuarioPj.getId());
 			usuarioRepository.insereAcessoUserPj(usuarioPj.getId(), "ROLE_ADMIN");
 			StringBuilder messageHtml =  new StringBuilder(); 	
 			messageHtml.append("<h2>Segue abaixo seus dados de acesso a loja virtual</h2>"); 
@@ -68,5 +73,43 @@ public class PessoaUserService {
 		}
 		return pessoaJuridica; 
 	}
+	
+	public PessoaFisica salvarPessoaFisica(PessoaFisica pessoaFisica) {
+		for(int i= 0; i < pessoaFisica.getEnderecos().size(); i++) { 
+			pessoaFisica.getEnderecos().get(i).setPessoa(pessoaFisica);
+			pessoaFisica.getEnderecos().get(i).setEmpresa(pessoaFisica);
+		}
+		Usuario usuarioPj = usuarioRepository.findUserByPessoa(pessoaFisica.getId(), pessoaFisica.getEmail()); 
+		pessoaFisica = pessoaFisicaRepository.save(pessoaFisica);
+		if(usuarioPj == null) {
+			String constriant = usuarioRepository.consultaConstraintAcesso(); 
+			if(constriant != null) {
+				jdbcTemplate.execute("begin; alter table usuarios_acesso drop constraint "+constriant+";commit;"); 
+			}
+			usuarioPj =  new Usuario();
+			usuarioPj.setDataAtualSenha(Calendar.getInstance().getTime());
+			usuarioPj.setEmpresa(pessoaFisica);
+			usuarioPj.setPessoa(pessoaFisica);
+			usuarioPj.setLogin(pessoaFisica.getEmail());
+			
+			String senha = "123"; //+Calendar.getInstance().getTimeInMillis();
+			String senhaCript = new BCryptPasswordEncoder().encode(senha);
+			usuarioPj.setSenha(senhaCript);
+			usuarioPj = usuarioRepository.save(usuarioPj);
+			usuarioRepository.insereAcessoUser(usuarioPj.getId());
+			StringBuilder messageHtml =  new StringBuilder(); 	
+			messageHtml.append("<h2>Segue abaixo seus dados de acesso a loja virtual</h2>"); 
+			messageHtml.append("<b>Login: </b>"+pessoaFisica.getEmail()+"<br/>"); 
+			messageHtml.append("<b>Senha: </b>"+senha+"<br/><br/>"); 
+			messageHtml.append("Obrigado!"); 
 
+			
+			try {
+			serviceEnvioEmail.enviarEmailHtml("Acesso Gerado para Loja Virtual", messageHtml.toString(), pessoaFisica.getEmail());
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return pessoaFisica; 
+	}
 }
