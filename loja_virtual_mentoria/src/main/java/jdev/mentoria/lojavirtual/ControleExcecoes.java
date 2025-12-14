@@ -47,7 +47,9 @@ public class ControleExcecoes extends ResponseEntityExceptionHandler {
 				
 			}
 			
-		}if(ex instanceof HttpMessageNotReadableException) {
+		}
+		
+		else if(ex instanceof HttpMessageNotReadableException) {
 			msg = "Não está sendo enviado dados para o Body corpo da requisição";
 			
 		} else {
@@ -60,7 +62,7 @@ public class ControleExcecoes extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<Object>(objetoErroDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	/*captura exceção de banco de dados*/
+	
 	@ExceptionHandler({DataIntegrityViolationException.class, ConstraintViolationException.class, SQLException.class})
 	protected ResponseEntity<Object> handleExceptionDataIntegry(Exception ex){
 

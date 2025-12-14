@@ -16,7 +16,7 @@ import jdev.mentoria.lojavirtual.model.Usuario;
 public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
 	
 	
-	@Query("select u from Usuario u left join fetch u.acessos where u.login = :login")
+	@Query("select distinct u from Usuario u left join fetch u.acessos where u.login = :login")
 	Usuario findUserByLogin(@Param("login") String login);
 
 	@Query(value = "select u from Usuario u where u.pessoa.id = ?1 or u.login = ?2")
