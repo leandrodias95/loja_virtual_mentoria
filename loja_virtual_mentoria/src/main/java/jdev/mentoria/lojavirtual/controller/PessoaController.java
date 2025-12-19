@@ -1,5 +1,7 @@
 package jdev.mentoria.lojavirtual.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,35 @@ public class PessoaController {
 		CepDTO cepDTO = pessoaUserService.consultaCep(cep);
 		return new ResponseEntity<CepDTO>(cepDTO, HttpStatus.OK);
 	}
+	
+	@ResponseBody
+	@GetMapping(value ="**/consultaPfNome/{nome}")
+	public ResponseEntity<List<PessoaFisica>> consultaPfNome(@PathVariable("nome")String nome){
+		List<PessoaFisica> fisicas = pessoafisicaRepository.pesquisaPorNomePF(nome.trim().toUpperCase());
+		return new ResponseEntity<List<PessoaFisica>>(fisicas, HttpStatus.OK);
+	}
+	
+	@ResponseBody
+	@GetMapping(value ="**/consultaPfCpf/{cpf}")
+	public ResponseEntity<List<PessoaFisica>> consultaPfCpf(@PathVariable("cpf")String cpf){
+		List<PessoaFisica> fisicas = pessoafisicaRepository.existeCpfCadastradoList(cpf);
+		return new ResponseEntity<List<PessoaFisica>>(fisicas, HttpStatus.OK);
+	}
+	
+	@ResponseBody
+	@GetMapping(value ="**/consultaNomePj/{nome}")
+	public ResponseEntity<List<PessoaJuridica>> consultaNomePj(@PathVariable("nome")String nome){
+		List<PessoaJuridica> juridicas = pessoaRepository.pesquisaPorNomePj(nome.trim().toUpperCase());
+		return new ResponseEntity<List<PessoaJuridica>>(juridicas, HttpStatus.OK);
+	}
+	
+	@ResponseBody
+	@GetMapping(value ="**/consultaCnpjPj/{cnpj}")
+	public ResponseEntity<List<PessoaJuridica>> consultaPorCnpj(@PathVariable("cnpj")String nome){
+		List<PessoaJuridica> juridicas = pessoaRepository.existeCnpjCadastradoList(nome.trim());
+		return new ResponseEntity<List<PessoaJuridica>>(juridicas, HttpStatus.OK);
+	}
+	
 	
 	@ResponseBody
 	@PostMapping(value = "**/salvarPj")
