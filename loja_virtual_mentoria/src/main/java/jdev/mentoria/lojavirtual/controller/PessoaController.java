@@ -15,14 +15,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import jdev.mentoria.lojavirtual.ExceptionMentoriaJava;
+import jdev.mentoria.lojavirtual.enums.TipoPessoa;
 import jdev.mentoria.lojavirtual.model.Endereco;
 import jdev.mentoria.lojavirtual.model.PessoaFisica;
 import jdev.mentoria.lojavirtual.model.PessoaJuridica;
 import jdev.mentoria.lojavirtual.model.dto.CepDTO;
+import jdev.mentoria.lojavirtual.model.dto.ConsultaCnpjDTO;
 import jdev.mentoria.lojavirtual.repository.EnderecoRepository;
 import jdev.mentoria.lojavirtual.repository.PessoaFisicaRepository;
 import jdev.mentoria.lojavirtual.repository.PessoaJuridicaRepository;
 import jdev.mentoria.lojavirtual.service.PessoaUserService;
+import jdev.mentoria.lojavirtual.service.ServiceContagemAcessoApi;
 import jdev.mentoria.lojavirtual.util.ValidaCNPJ;
 import jdev.mentoria.lojavirtual.util.ValidaCPF;
 
@@ -41,6 +44,9 @@ public class PessoaController {
 	@Autowired
 	private EnderecoRepository enderecoRepository; 
 	
+	@Autowired
+	private ServiceContagemAcessoApi serviceContagemAcessoApi;
+	
 	@ResponseBody
 	@GetMapping(value= "**/consultaCep/{cep}")
 	public ResponseEntity<CepDTO> consultaCep(@PathVariable("cep") String cep){
@@ -49,9 +55,17 @@ public class PessoaController {
 	}
 	
 	@ResponseBody
+	@GetMapping(value= "**/consultaCnpjReceitaWs/{cnpj}")
+	public ResponseEntity<ConsultaCnpjDTO> consultaCnpj(@PathVariable("cnpj") String cnpj){
+		ConsultaCnpjDTO consultaCnpjDTO = pessoaUserService.consultaReceitaWS(cnpj);
+		return new ResponseEntity<ConsultaCnpjDTO>(consultaCnpjDTO, HttpStatus.OK);
+	}
+	
+	@ResponseBody
 	@GetMapping(value ="**/consultaPfNome/{nome}")
 	public ResponseEntity<List<PessoaFisica>> consultaPfNome(@PathVariable("nome")String nome){
 		List<PessoaFisica> fisicas = pessoafisicaRepository.pesquisaPorNomePF(nome.trim().toUpperCase());
+		serviceContagemAcessoApi.atualizaAcessoEndPointPF();
 		return new ResponseEntity<List<PessoaFisica>>(fisicas, HttpStatus.OK);
 	}
 	
@@ -83,6 +97,10 @@ public class PessoaController {
 		if(pessoaJuridica == null) {
 			throw new ExceptionMentoriaJava("Pessoa Jurídica não pode ser null");
 		}
+		if(pessoaJuridica.getTipoPessoa() == null) {
+			throw new ExceptionMentoriaJava("Informe o tipo jurídico ou fornecedor da loja");
+		}
+		
 		if(pessoaJuridica.getId()== null && pessoaRepository.existeCnpjCadastrado(pessoaJuridica.getCnpj()) != null) {
 			throw new ExceptionMentoriaJava("Já existe CNPJ cadastrado com o número: "+ pessoaJuridica.getCnpj());
 		}
@@ -138,6 +156,9 @@ public class PessoaController {
 			throw new ExceptionMentoriaJava("Já existe CPF cadastrado com o número: "+ pessoaFisica.getCpf());
 		}
 		
+		if(pessoaFisica.getTipoPessoa() == null) {
+			pessoaFisica.setTipoPessoa(TipoPessoa.FISICA.name());
+		}
 		
 		if (!ValidaCPF.isCPF(pessoaFisica.getCpf())) {
 			throw new ExceptionMentoriaJava("CPF: "+pessoaFisica.getCpf()+ " está inválido!");
